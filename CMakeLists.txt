@@ -52,7 +52,10 @@ add_dependencies(${PROJECT_NAME} clear )
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${SRC}/Window.cpp
-        ${SRC}/GuiElements.cpp
+        ${SRC}/Screen.cpp
+        ${SRC}/Button.cpp
+        ${SRC}/Exception.cpp
+        ${SRC}/IGuiElement.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} raylib)

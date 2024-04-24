@@ -1,10 +1,19 @@
 #pragma once
 #include <raylib.h>
+#include <string>
+#include <memory>
 
 class IGuiElement {
 protected:
-    Rectangle body;
+    std::string id_;
+    Rectangle body_;
+    IGuiElement* parent_;
 public:
+    IGuiElement(const char* id, Rectangle body, IGuiElement* parent = nullptr);
+    Rectangle body();
+    std::string id();
+    IGuiElement* parent();
+    void setParent_(IGuiElement* parent);
     virtual void update(double deltaTime) = 0;
     virtual void draw() = 0;
 };
