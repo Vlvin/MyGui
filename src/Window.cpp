@@ -40,11 +40,22 @@ std::shared_ptr<Window> Window::getInstance(int positionX, int positionY, int wi
 }
 
 void Window::update(double deltaTime) {
+    this->update_size();
     if (!this->screen_p) return;
     (this->screen_p)->update(deltaTime);
 }
 
 void Window::draw() {
-    if (!this->screen_p) return;
+    if (!this->screen_p.get()) return;
     (this->screen_p)->draw();
+}
+
+void Window::update_size() {
+    Vector2 position = GetWindowPosition();
+    int width = GetScreenWidth(), height = GetScreenHeight();
+    body_.x = position.x;
+    body_.y = position.y;
+    body_.width = width;
+    body_.height = height;
+    realbody_ = body_;
 }

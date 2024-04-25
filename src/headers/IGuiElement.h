@@ -6,6 +6,7 @@
 class IGuiElement {
 protected:
     std::string id_;
+    Rectangle realbody_;
     Rectangle body_;
     IGuiElement* parent_;
 public:
@@ -14,6 +15,7 @@ public:
     std::string id();
     IGuiElement* parent();
     void setParent_(IGuiElement* parent);
+    virtual void update_size();
     virtual void update(double deltaTime) = 0;
     virtual void draw() = 0;
 };

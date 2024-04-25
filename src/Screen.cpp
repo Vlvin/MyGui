@@ -20,6 +20,7 @@ void Screen::draw() {
 }
 
 void Screen::update(double deltaTime) {
+    this->update_size();
     for (size_t i = 0; i < elements_.size(); i++) {
         this->elements_[i]->update(deltaTime);
     }

@@ -13,11 +13,12 @@ bool Button::is_pressed() {
 }
 
 void Button::update(double deltaTime) {
+    this->update_size();
     this->is_pressed_ = false;
     this->color_ = WHITE;
     Vector2 mouse = GetMousePosition();
-    if ((body_.x < mouse.x) && (mouse.x < (body_.x + body_.width)) &&
-        (body_.y < mouse.y) && (mouse.y < (body_.y + body_.height))
+    if ((realbody_.x < mouse.x) && (mouse.x < (realbody_.x + realbody_.width)) &&
+        (realbody_.y < mouse.y) && (mouse.y < (realbody_.y + realbody_.height))
     ) 
     {
         this->color_ = GRAY;
@@ -29,5 +30,5 @@ void Button::update(double deltaTime) {
 }
 
 void Button::draw() {
-    DrawRectangleRec(this->body_, this->color_);
+    DrawRectangleRec(this->realbody_, this->color_);
 }

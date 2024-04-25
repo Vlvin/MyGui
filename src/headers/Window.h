@@ -21,4 +21,5 @@ public:
     ~Window();
     virtual void draw() override;
     virtual void update(double deltaTime) override;
+    virtual void update_size() override;
 };
