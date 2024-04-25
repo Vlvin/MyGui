@@ -22,6 +22,14 @@ target_link_libraries(target RayGUI)
 target_include_directories(target PUBLIC build_path/RayGUI/include)
 ```
 to your CMake file
+### Build and use as binaries
+In directory with RayGUI source folder
+```bash
+cd RayGUI
+cmake . -B build
+cmake --build build/
+```
+and now in build folder you have binaries and include/ folder
 
 ## Use binaries
 (I promise, someday I will compile binaries for win_x64 and debian_x64, but now you need to build them yourself)
