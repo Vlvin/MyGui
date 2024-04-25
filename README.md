@@ -7,14 +7,13 @@ RayGUI is:
 - able to be used in **lightweight environment** 'cause it all compiles into library file and have all includes in one file
 - **easy to build** - 'cause now project provides cmake file (maybe it'll has expantion to other build systems)
 
-# Installation
+# Build
 To use RayGUI in your project, do following steps:
 - download repository archive
 - unpack it to your project folder
 
-## Build
-There are two ways how you can do it:
-### Include to CMake project
+Next there are two ways how you can build RayGUI:
+## Include to CMake project
 just add 
 ```cmake
 add_subdirectory(path/to/RayGUI-src)
@@ -22,7 +21,7 @@ target_link_libraries(target RayGUI)
 target_include_directories(target PUBLIC build_path/RayGUI/include)
 ```
 to your CMake file
-### Build and use as binaries
+## Build and use as binaries
 In directory with RayGUI source folder
 ```bash
 cd RayGUI
