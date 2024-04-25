@@ -13,7 +13,7 @@ To use RayGUI in your project, do following steps:
 - unpack it to your project folder
 
 Next there are two ways how you can build RayGUI:
-## Include to CMake project
+## 1. Include to CMake project
 just add 
 ```cmake
 add_subdirectory(path/to/RayGUI-src)
@@ -21,7 +21,7 @@ target_link_libraries(target RayGUI)
 target_include_directories(target PUBLIC build_path/RayGUI/include)
 ```
 to your CMake file
-## Build and use as binaries
+## 2. Build and use as binaries
 In directory with RayGUI source folder
 ```bash
 cd RayGUI
