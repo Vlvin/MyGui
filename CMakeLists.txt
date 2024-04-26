@@ -55,6 +55,7 @@ target_sources(${PROJECT_NAME}
         ${SRC}/Screen.cpp
         ${SRC}/Button.cpp
         ${SRC}/Exception.cpp
+        ${SRC}/types.cpp
         ${SRC}/IGuiElement.cpp
 )
 

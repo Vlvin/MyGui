@@ -1,11 +1,14 @@
 #include "Background/Exception.h"
 
 
-Exception::Exception(const char* message) : message(message) {}
+RayException::RayException(const char* message) : message(message) {}
 
-const char* Exception::what() const throw() {
+const char* RayException::what() const throw() {
     return this->message.c_str();
 }
 
 OutOfRangeException::OutOfRangeException(const char* message, const char* element_id) 
-: Exception((std::string(message) + std::string(element_id)).c_str()) {}
+: RayException((std::string(message) + std::string(element_id)).c_str()) {}
+
+NotAUnitTypeException::NotAUnitTypeException(const char* message, std::string typeLiteral)
+: RayException((std::string(message) + typeLiteral).c_str()) {}

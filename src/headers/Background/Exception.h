@@ -2,15 +2,20 @@
 #include <exception>
 #include <string>
 
-class Exception : public std::exception  {
+class RayException : public std::exception  {
 protected:
     std::string message;
 public:
-    Exception(const char* message);
+    RayException(const char* message);
     const char* what() const throw();
 };
 
-class OutOfRangeException : public Exception {
+class OutOfRangeException : public RayException {
 public:
     OutOfRangeException(const char* message, const char* element_id);
+};
+
+class NotAUnitTypeException : public RayException {
+public:
+    NotAUnitTypeException(const char* message, std::string typeLiteral);
 };
