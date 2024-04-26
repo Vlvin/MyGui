@@ -12,10 +12,15 @@ public:
 
 class OutOfRangeException : public RayException {
 public:
-    OutOfRangeException(const char* message, const char* element_id);
+    OutOfRangeException(const char* message, const char* elementID);
 };
 
 class NotAUnitTypeException : public RayException {
 public:
     NotAUnitTypeException(const char* message, std::string typeLiteral);
+};
+
+class NoSuchElementException : public RayException {
+public:
+    NoSuchElementException(const char* message, std::string elementIndex);
 };

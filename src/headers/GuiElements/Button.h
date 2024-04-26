@@ -8,7 +8,7 @@ protected:
     // std::string id
     // Rectangle body
 public: 
-    Button(const char* id, Rectangle body, IGuiElement* parent);
+    Button(const char* id, RayRect body, IGuiElement* parent);
     ~Button();
     virtual bool is_pressed();
     virtual void draw() override;

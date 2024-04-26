@@ -6,7 +6,7 @@
 std::shared_ptr<Window> Window::instance_p = nullptr;
 
 Window::Window(int positionX, int positionY, int width, int height, const char* title) 
-: IGuiElement(title, Rectangle{(float)positionX, (float)positionY, (float)width, (float)height}) {
+: IGuiElement(title, RayRect{(float)positionX, (float)positionY, (float)width, (float)height}) {
     InitWindow(width, height, title);
     SetWindowPosition(positionX, positionY);
     std::string scrID("Window::");
@@ -57,5 +57,8 @@ void Window::update_size() {
     body_.y = position.y;
     body_.width = width;
     body_.height = height;
-    realbody_ = body_;
+    realbody_.x = body_["x"];
+    realbody_.y = body_["y"];
+    realbody_.width = body_["width"];
+    realbody_.height = body_["height"];
 }

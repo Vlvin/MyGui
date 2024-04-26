@@ -8,11 +8,12 @@ class IGuiElement {
 protected:
     std::string id_;
     Rectangle realbody_;
-    Rectangle body_;
+    RayRect body_;
     IGuiElement* parent_;
 public:
-    IGuiElement(const char* id, Rectangle body, IGuiElement* parent = nullptr);
-    Rectangle body();
+    IGuiElement(const char* id, RayRect body, IGuiElement* parent = nullptr);
+    RayRect body();
+    Rectangle realbody();
     std::string id();
     IGuiElement* parent();
     void setParent_(IGuiElement* parent);

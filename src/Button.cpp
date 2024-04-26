@@ -1,6 +1,6 @@
 #include "GuiElements/Button.h"
 
-Button::Button(const char* id, Rectangle body, IGuiElement* parent)
+Button::Button(const char* id, RayRect body, IGuiElement* parent)
 : IGuiElement(id, body, parent) {
     this->is_pressed_ = false;
     this->color_ = WHITE;
