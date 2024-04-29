@@ -54,6 +54,7 @@ target_sources(${PROJECT_NAME}
         ${SRC}/Window.cpp
         ${SRC}/Screen.cpp
         ${SRC}/Button.cpp
+        ${SRC}/TextEdit.cpp
         ${SRC}/Exception.cpp
         ${SRC}/types.cpp
         ${SRC}/IGuiElement.cpp

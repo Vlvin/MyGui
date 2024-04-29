@@ -60,6 +60,16 @@ void IGuiElement::setParent_(IGuiElement* parent) {
     this->parent_ = parent;
 }
 
+void IGuiElement::setPosition(RayUnit x, RayUnit y) {
+    this->body_.x = x;
+    this->body_.y = y;
+}
+
+void IGuiElement::setSize(RayUnit width, RayUnit height) {
+    this->body_.width = width;
+    this->body_.height = height;
+}
+
 void IGuiElement::update_size() {
     if ((!parent_)) {
         this->realbody_.x = body_["x"];

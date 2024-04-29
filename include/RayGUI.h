@@ -6,3 +6,4 @@
     // Elements
 #include "GuiElements/Button.h"
 #include "GuiElements/Screen.h"
+#include "GuiElements/TextEdit.h"

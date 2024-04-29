@@ -16,8 +16,11 @@ public:
     Rectangle realbody();
     std::string id();
     IGuiElement* parent();
-    void setParent_(IGuiElement* parent);
     virtual void update_size();
     virtual void update(double deltaTime) = 0;
     virtual void draw() = 0;
+
+    void setPosition(RayUnit x, RayUnit y);
+    void setSize(RayUnit width, RayUnit height);
+    void setParent_(IGuiElement* parent);
 };

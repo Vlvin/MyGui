@@ -49,18 +49,8 @@ void Screen::remove(const char* id) {
     elementsDictionary_.erase(key);
 }
 
-IGuiElement* Screen::get_p(const char* id) {
-    std::string key(id);
-    if (!this->elementsDictionary_.count(key)) 
-        throw OutOfRangeException(
-            "No such element: ", id
-        );
-    std::map<std::string, size_t>::iterator dictionarySlice = this->elementsDictionary_.find(key);
-    size_t index = dictionarySlice->second;
-    return this->elements_[index];
-}
 
 
-IGuiElement* Screen::operator[](const char* id) {
-    return this->get_p(id);
-}
+// IGuiElement* Screen::operator[](const char* id) {
+//     return this->get_p(id);
+// }
