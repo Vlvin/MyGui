@@ -114,16 +114,6 @@ void TextEdit::update(double deltaTime) {
                 cursor_ = 0;
                 text_.push_back("");
                 break;
-            case KEY_LEFT_SHIFT:
-            case KEY_RIGHT_SHIFT:
-            case KEY_LEFT_ALT:
-            case KEY_RIGHT_ALT:
-            case KEY_LEFT_CONTROL:
-            case KEY_RIGHT_CONTROL:
-            case KEY_LEFT_SUPER:
-            case KEY_RIGHT_SUPER:
-            case KEY_CAPS_LOCK:
-                break;
             case KEY_LEFT:
                 if (cursor_ == 0) {
                     if (line_ == 0) break;
@@ -155,13 +145,37 @@ void TextEdit::update(double deltaTime) {
             case KEY_TAB:
                 this->text_[line_].append({'\t'});
                 break;
+            case KEY_LEFT_SHIFT:
+            case KEY_RIGHT_SHIFT:
+            case KEY_LEFT_ALT:
+            case KEY_RIGHT_ALT:
+            case KEY_LEFT_CONTROL:
+            case KEY_RIGHT_CONTROL:
+            case KEY_LEFT_SUPER:
+            case KEY_RIGHT_SUPER:
+            case KEY_CAPS_LOCK:
+                break;
             default:
+                // if (cursor_ >= text_[line_].size()) {
+                //     this->text_[line_].append({
+                //             (charmap.at(shift).count(key)) ? 
+                //             charmap.at(shift).at(key) :
+                //             char(key)
+                //     });
+                //     cursor_++;
+                //     break;
+                // }
+                text_[line_] = (
+                    text_[line_].substr(0, cursor_) + 
+                    std::string(
+                        {(charmap.at(shift).count(key)) ? 
+                        charmap.at(shift).at(key) :
+                        char(key)}
+                    ) +
+                    text_[line_].substr(cursor_)
+                );
+                
                 cursor_++;
-                this->text_[line_].append({
-                    (charmap.at(shift).count(key)) ? 
-                    charmap.at(shift).at(key) :
-                    char(key)
-                    });
         }
     }
 }
@@ -171,9 +185,9 @@ void TextEdit::draw() {
     float font = realbody_.width*0.2;
     for (size_t i = 0; i < text_.size(); i++) {
         if (i == line_) {
-            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, 1., BLACK);
+            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, font*0.05, BLACK);
         } else
-            DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, 1., BLACK);
+            DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, font*0.05, BLACK);
     }
     // DrawTextPro(GetFontDefault(), (text_ + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "")).c_str(), {realbody_.x, realbody_.y}, {0., 0.}, 0., 20., 1., BLACK);
 }
