@@ -4,15 +4,25 @@
 
 TextEdit::TextEdit(const char* id, RayRect body, IGuiElement* parent)
 : IGuiElement(id, body, parent) {
-    this->text_ = "";
+    this->line_ = 0;
+    this->cursor_ = 0;
+    this->start_index_ = 0;
+    this->start_line_ = 0;
+    this->text_ = {""};
     this->is_in_focus_ = false;
 }
 
 bool TextEdit::is_in_focus() {
     return is_in_focus_;
 }
-std::string TextEdit::text() {
+
+std::vector<std::string> TextEdit::text() {
     return text_;
+}
+
+std::string TextEdit::line(size_t line) {
+    if (line > text_.size()) return "";
+    return text_[line];
 }
 
 void TextEdit::update(double deltaTime) {
@@ -84,13 +94,25 @@ void TextEdit::update(double deltaTime) {
     };
     int key = GetKeyPressed();
     bool shift = IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT);
+    printf("%lu %lu %lu %lu\n", text_.size(), line_, cursor_, text_[line_].size());
     if (key && is_in_focus_) {
         switch (key) {
             case KEY_BACKSPACE:
-                this->text_.pop_back();
+                if (cursor_ == 0) {
+                    break;
+                }
+                if (cursor_ >= text_[line_].size()) {
+                    text_[line_].pop_back();
+                    cursor_--;
+                    break;
+                }
+                text_[line_] = text_[line_].substr(0, cursor_) + text_[line_].substr(cursor_+1);
+                cursor_--;
                 break;
             case KEY_ENTER:
-                this->text_.append({'\n'});
+                line_++;
+                cursor_ = 0;
+                text_.push_back("");
                 break;
             case KEY_LEFT_SHIFT:
             case KEY_RIGHT_SHIFT:
@@ -102,11 +124,40 @@ void TextEdit::update(double deltaTime) {
             case KEY_RIGHT_SUPER:
             case KEY_CAPS_LOCK:
                 break;
+            case KEY_LEFT:
+                if (cursor_ == 0) {
+                    if (line_ == 0) break;
+                    line_--;
+                    cursor_ = text_[line_].size();
+                    break;
+                }
+                cursor_--;
+                break;
+            case KEY_RIGHT:
+                if (cursor_ >= text_[line_].size()) {
+                    if (line_ >= text_.size() - 1) break;
+                    line_++;
+                    cursor_ = 0;
+                    break;
+                }
+                cursor_++;
+                break;
+            case KEY_UP:
+                if (line_ == 0) break;
+                line_--;
+                if (cursor_ >= text_[line_].size()) cursor_ = text_[line_].size(); 
+                break;
+            case KEY_DOWN:
+                if (line_ == text_.size() - 1) break;
+                line_++;
+                if (cursor_ >= text_[line_].size()) cursor_ = text_[line_].size(); 
+                break;
             case KEY_TAB:
-                this->text_.append({'\t'});
+                this->text_[line_].append({'\t'});
                 break;
             default:
-                this->text_.append({
+                cursor_++;
+                this->text_[line_].append({
                     (charmap.at(shift).count(key)) ? 
                     charmap.at(shift).at(key) :
                     char(key)
@@ -117,5 +168,12 @@ void TextEdit::update(double deltaTime) {
 
 void TextEdit::draw() {
     DrawRectangleRec(this->realbody_, WHITE);
-    DrawTextPro(GetFontDefault(), (text_ + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "")).c_str(), {realbody_.x, realbody_.y}, {0., 0.}, 0., 20., 1., BLACK);
+    float font = realbody_.width*0.2;
+    for (size_t i = 0; i < text_.size(); i++) {
+        if (i == line_) {
+            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, 1., BLACK);
+        } else
+            DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, 1., BLACK);
+    }
+    // DrawTextPro(GetFontDefault(), (text_ + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "")).c_str(), {realbody_.x, realbody_.y}, {0., 0.}, 0., 20., 1., BLACK);
 }
