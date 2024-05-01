@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 #include "IGuiElement.h"
 
 class TextEdit : public IGuiElement {
+    static std::map<bool, std::map<int, char>> charmap;
 protected:
     std::vector<std::string> text_;
     size_t line_, cursor_, start_line_, start_index_;
