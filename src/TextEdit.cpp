@@ -118,13 +118,21 @@ void TextEdit::update(double deltaTime) {
                 text_[line_] = text_[line_].substr(0, cursor_-1) + text_[line_].substr(cursor_);
                 cursor_--;
                 break;
+            case KEY_DELETE:
+                if (cursor_ >= text_[line_].size()) {
+                    if (line_ >= text_.size() - 1) break;
+                    text_[line_] += text_[line_+1];
+                    for (size_t i = line_+1; i < text_.size()-1; i++) {
+                        text_[i] = text_[i+1];
+                    }
+                    text_.pop_back();
+                    break;
+                }
+                text_[line_] = text_[line_].substr(0, cursor_) + text_[line_].substr(cursor_+1);
+                break;
             case KEY_ENTER:
                 line_++;
                 text_.push_back("");
-                // if (line_ >= text_.size() - 1) {
-                //     cursor_ = 0;
-                //     break;
-                // }
                 for (size_t i = text_.size() - 1; i > line_; i--) {
                     text_[i] = text_[i - 1];
                 } 
