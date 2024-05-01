@@ -95,8 +95,9 @@ void TextEdit::update(double deltaTime) {
     };
     int key = GetKeyPressed();
     bool shift = IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT);
-    printf("%lu %lu %lu %lu\n", text_.size(), line_, cursor_, text_[line_].size());
+    // printf("%lu %lu %lu %lu\n", text_.size(), line_, cursor_, text_[line_].size());
     if (key && is_in_focus_) {
+        printf("%d\n", key);
         switch (key) {
             case KEY_BACKSPACE:
                 if (cursor_ == 0) {
@@ -177,6 +178,12 @@ void TextEdit::update(double deltaTime) {
             case KEY_TAB:
                 this->text_[line_].append({'\t'});
                 break;
+            case KEY_END:
+                cursor_ = text_[line_].size();
+                break;
+            case KEY_HOME:
+                cursor_ = 0;
+                break;
             case KEY_LEFT_SHIFT:
             case KEY_RIGHT_SHIFT:
             case KEY_LEFT_ALT:
@@ -207,7 +214,7 @@ void TextEdit::draw() {
     DrawRectangleRec(this->realbody_, WHITE);
     for (size_t i = 0; i < text_.size(); i++) {
         if (i == line_) {
-            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font_*i}, {0., 0.}, 0., font_, font_*0.05, BLACK);
+            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()*2) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font_*i}, {0., 0.}, 0., font_, font_*0.05, BLACK);
         } else
             DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font_*i}, {0., 0.}, 0., font_, font_*0.05, BLACK);
     }
