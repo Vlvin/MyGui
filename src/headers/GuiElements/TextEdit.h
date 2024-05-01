@@ -7,6 +7,7 @@ class TextEdit : public IGuiElement {
 protected:
     std::vector<std::string> text_;
     size_t line_, cursor_, start_line_, start_index_;
+    float font_;
     bool is_in_focus_;
 public:
     TextEdit(const char* id, RayRect body, IGuiElement* parent);

@@ -26,6 +26,7 @@ std::string TextEdit::line(size_t line) {
 }
 
 void TextEdit::update(double deltaTime) {
+    font_ = realbody_.width*0.2;
     this->update_size();
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 
@@ -99,6 +100,14 @@ void TextEdit::update(double deltaTime) {
         switch (key) {
             case KEY_BACKSPACE:
                 if (cursor_ == 0) {
+                    if (line_ == 0) break;
+                    cursor_ = text_[line_-1].size();
+                    text_[line_-1] += text_[line_];
+                    for (size_t i = line_+1; i < text_.size(); i++) {
+                        text_[i - 1] = text_[i];
+                    }
+                    text_.pop_back();
+                    line_--;
                     break;
                 }
                 if (cursor_ >= text_[line_].size()) {
@@ -106,13 +115,28 @@ void TextEdit::update(double deltaTime) {
                     cursor_--;
                     break;
                 }
-                text_[line_] = text_[line_].substr(0, cursor_) + text_[line_].substr(cursor_+1);
+                text_[line_] = text_[line_].substr(0, cursor_-1) + text_[line_].substr(cursor_);
                 cursor_--;
                 break;
             case KEY_ENTER:
                 line_++;
-                cursor_ = 0;
                 text_.push_back("");
+                // if (line_ >= text_.size() - 1) {
+                //     cursor_ = 0;
+                //     break;
+                // }
+                for (size_t i = text_.size() - 1; i > line_; i--) {
+                    text_[i] = text_[i - 1];
+                } 
+                if (cursor_ >= text_[line_-1].size()) {
+                    text_[line_] = "";
+                    cursor_ = 0;
+                    break;
+                }
+                text_[line_] = text_[line_-1].substr(cursor_);
+                text_[line_ - 1] = text_[line_ - 1].substr(0, cursor_);
+                cursor_ = 0;
+
                 break;
             case KEY_LEFT:
                 if (cursor_ == 0) {
@@ -156,15 +180,6 @@ void TextEdit::update(double deltaTime) {
             case KEY_CAPS_LOCK:
                 break;
             default:
-                // if (cursor_ >= text_[line_].size()) {
-                //     this->text_[line_].append({
-                //             (charmap.at(shift).count(key)) ? 
-                //             charmap.at(shift).at(key) :
-                //             char(key)
-                //     });
-                //     cursor_++;
-                //     break;
-                // }
                 text_[line_] = (
                     text_[line_].substr(0, cursor_) + 
                     std::string(
@@ -182,12 +197,10 @@ void TextEdit::update(double deltaTime) {
 
 void TextEdit::draw() {
     DrawRectangleRec(this->realbody_, WHITE);
-    float font = realbody_.width*0.2;
     for (size_t i = 0; i < text_.size(); i++) {
         if (i == line_) {
-            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, font*0.05, BLACK);
+            DrawTextPro(GetFontDefault(), (text_[i].substr(0, cursor_) + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "") + text_[i].substr(cursor_)).c_str(), {realbody_.x, realbody_.y + font_*i}, {0., 0.}, 0., font_, font_*0.05, BLACK);
         } else
-            DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font*i}, {0., 0.}, 0., font, font*0.05, BLACK);
+            DrawTextPro(GetFontDefault(), text_[i].c_str(), {realbody_.x, realbody_.y + font_*i}, {0., 0.}, 0., font_, font_*0.05, BLACK);
     }
-    // DrawTextPro(GetFontDefault(), (text_ + std::string((int(GetTime()) % 2 && is_in_focus_) ? "|" : "")).c_str(), {realbody_.x, realbody_.y}, {0., 0.}, 0., 20., 1., BLACK);
 }
