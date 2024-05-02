@@ -5,8 +5,10 @@
 #include "IGuiElement.h"
 
 class TextEdit : public IGuiElement {
+    static std::map<char, float> spacing;
     static std::map<bool, std::map<int, char>> charmap;
 protected:
+    void drawText();
     std::vector<std::string> text_;
     size_t line_, cursor_, start_line_, start_index_;
     float font_;
